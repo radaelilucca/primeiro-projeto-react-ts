@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
-import React, { useEffect, useState, FormEvent } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 
-import { Title, Form, Repositories } from './styles';
+import { Title, Form, Repositories, Error } from './styles';
 
 import logo from '../../assets/logo.svg';
 
@@ -21,30 +21,42 @@ interface Repository {
 const Dashboard: React.FC = () => {
   const [newRepo, setNewRepo] = useState('');
   const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [inputError, setInputError] = useState('');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
-    const response = await api.get<Repository>(`/repos/${newRepo}`);
+    if (!newRepo) {
+      setInputError('Digite autor/nome do repositório');
+      return;
+    }
 
-    const repository = response.data;
+    try {
+      const response = await api.get<Repository>(`/repos/${newRepo}`);
 
-    setRepositories([...repositories, repository]);
-    setNewRepo('');
+      const repository = response.data;
+
+      setRepositories([...repositories, repository]);
+      setNewRepo('');
+      setInputError('');
+    } catch (error) {
+      setInputError('Erro na busca pelo repositório');
+    }
   };
 
   return (
     <>
       <img src={logo} alt="Github Explorer" />
       <Title>Explore repositórios no Github</Title>
-      <Form onSubmit={e => handleSubmit(e)}>
+      <Form onSubmit={e => handleSubmit(e)} hasError={!!inputError}>
         <input
           value={newRepo}
-          placeholder="Digite o nome do repositório"
+          placeholder="Digite autor/nome do repositório"
           onChange={e => setNewRepo(e.target.value)}
         />
         <button type="submit">Pesquisar</button>
       </Form>
+      {inputError && <Error>{inputError}</Error>}
 
       <Repositories>
         {repositories.map(repository => (
