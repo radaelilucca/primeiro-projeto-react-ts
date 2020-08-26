@@ -1,10 +1,9 @@
 import React from 'react';
 
-
 function App() {
   return (
     <div className="App">
-     <h1>Hello React</h1>
+    <h1>GitHub Explorer</h1>
     </div>
   );
 }
