@@ -1,11 +1,14 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-    <h1>GitHub Explorer</h1>
-    </div>
-  );
-}
+import Routes from './routes';
+
+const App: React.FC = () => {
+    return (
+        <BrowserRouter>
+            <Routes />
+      </BrowserRouter>
+    );
+};
 
 export default App;
