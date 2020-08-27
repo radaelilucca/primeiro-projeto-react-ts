@@ -90,6 +90,19 @@ export const IssuesContainer = styled.div`
 
     &:hover {
       transform: translateX(10px);
+
+      img {
+        border-radius: 20%;
+        transform: scale(1.4);
+        margin-right: 8px;
+      }
+    }
+
+    img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      transition: 0.3s;
     }
 
     div {
